@@ -20,7 +20,7 @@ export function WidgetForm() {
 			)}
 
 			<footer className="text-xs text-neutral-400">
-				Feito com ♥ pela <a href="https://rocketseat.com.br" className="underline underline-offset-2">Rocketseat</a>
+				Copyright &copy; <a href="https://www.linkedin.com/in/felipe-leite-a96374109/" className="underline underline-offset-2">Felipe Leite</a>
 			</footer>
 		</div>
 	)

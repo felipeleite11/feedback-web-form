@@ -1,0 +1,15 @@
+export interface FeedbackCreateData {
+	type: string
+	comment: string
+	screenshot?: string
+}
+
+export interface FeedbackReturnData extends FeedbackCreateData {
+	id: string
+}
+
+export interface FeedbackRepository {
+	create: (data: FeedbackCreateData) => Promise<FeedbackReturnData>
+
+	list: () => Promise<FeedbackReturnData[]>
+}

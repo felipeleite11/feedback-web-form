@@ -7,6 +7,10 @@ interface SubmitFeedbackUseCaseRequest {
 	screenshot?: string
 }
 
+function validateScreenshotURI(uri: string) {
+	return uri.startsWith('file:///') || uri.startsWith('data:image/png;base64')
+}
+
 export class SubmitFeedbackUseCase {
 	constructor(
 		private feedbackRepository: FeedbackRepository,
@@ -24,7 +28,7 @@ export class SubmitFeedbackUseCase {
 			throw new Error('Comment is required.')
 		}
 
-		if(screenshot && !screenshot.startsWith('data:image/png;base64')) {
+		if(screenshot && !validateScreenshotURI(screenshot)) {
 			throw new Error('Invalid screenshot format.')
 		}
 

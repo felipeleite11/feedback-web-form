@@ -41,8 +41,6 @@ function Widget() {
 	}
 
 	function handleSent() {
-		console.log('Feedback enviado')
-
 		setFeedbackSent(true)
 	}
 

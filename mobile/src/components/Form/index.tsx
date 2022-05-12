@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { ArrowLeft } from 'phosphor-react-native'
 import { captureScreen } from 'react-native-view-shot'
+import * as fileSystem from 'expo-file-system'
 
 import { View, TextInput, Image, Text, TouchableOpacity } from 'react-native'
 
@@ -22,8 +23,19 @@ interface FormProps {
 
 interface FeedbackStoreRequest {
 	type: string
-	screenshot: string
+	screenshot?: string
 	comment: string
+	device: string
+}
+
+async function getScreenshotBase64(path: string | null) {
+	if(!path) {
+		return undefined
+	}
+
+	const base64String = await fileSystem.readAsStringAsync(path, { encoding: fileSystem.EncodingType.Base64 })
+
+	return `data:image/png;base64, ${base64String}`
 }
 
 export function Form({ feedbackType, onGoBack, onFeedbackSent }: FormProps) {
@@ -37,7 +49,7 @@ export function Form({ feedbackType, onGoBack, onFeedbackSent }: FormProps) {
 		try {
 			const uri = await captureScreen({
 				format: 'jpg',
-				quality: 0.8,
+				quality: 0.8
 			})
 
 			setScreenshot(uri)
@@ -54,22 +66,23 @@ export function Form({ feedbackType, onGoBack, onFeedbackSent }: FormProps) {
 		setIsSending(true)
 
 		try {
-			const { data: response } = await api.post<FeedbackStoreRequest>('feedbacks', {
+			const body: FeedbackStoreRequest = {
 				type: feedbackType,
-				screenshot,
-				comment
-			})
+				comment,
+				screenshot: await getScreenshotBase64(screenshot), 
+				device: 'mobile'
+			}
+
+			await api.post<FeedbackStoreRequest>('feedbacks', body)
 			
-			console.log('API response', response)
+			setIsSending(false)
 
 			onFeedbackSent()
 		} catch(e) {
 			console.log(e)
-		} finally {
+
 			setIsSending(false)
 		}
-
-		console.log('END')
 	}
 
 	return (

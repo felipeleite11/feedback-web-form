@@ -5,10 +5,11 @@ interface SubmitFeedbackUseCaseRequest {
 	type: string
 	comment: string
 	screenshot?: string
+	device: string
 }
 
 function validateScreenshotURI(uri: string) {
-	return uri.startsWith('file:///') || uri.startsWith('data:image/png;base64')
+	return uri.startsWith('data:image/png;base64')
 }
 
 export class SubmitFeedbackUseCase {
@@ -18,7 +19,7 @@ export class SubmitFeedbackUseCase {
 	) {}
 
 	async execute(request: SubmitFeedbackUseCaseRequest) {
-		const { type, comment, screenshot } = request
+		const { type, comment, screenshot, device } = request
 
 		if(!type) {
 			throw new Error('Type is required.')
@@ -38,12 +39,16 @@ export class SubmitFeedbackUseCase {
 			screenshot 
 		})
 
+		const screenshotWidth = device === 'mobile' ? '400px' : 'unset'
+		const screenshotHTML = screenshot ? `<p><img src="${screenshot}" style="width: ${screenshotWidth}" /></p>` : ''
+
 		await this.mailAdapter.sendMail({
-			subject: 'Novo feedback',
+			subject: `[${type}] Novo feedback`,
 			body: [
 				'<div style="font-family: sans-serif; font-size: 16px">',
 				`<p>Tipo: ${type}</p>`,
 				`<p>Comentário: ${comment}</p>`,
+				screenshotHTML,
 				'</div>'
 			].join('')
 		})

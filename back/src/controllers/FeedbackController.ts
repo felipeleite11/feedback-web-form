@@ -17,7 +17,7 @@ class FeedbackController {
 	}
 
 	async store(req: Request, res: Response) {
-		const { type, comment, screenshot } = req.body
+		const { type, comment, screenshot, device } = req.body
 
 		const prismaFeedbackRepository = new PrismaFeedbackRepository()
 		const mailAdpter = new NodemailerMailAdapter()
@@ -27,7 +27,8 @@ class FeedbackController {
 		const feedback = await submitFeedbackUC.execute({
 			type,
 			comment,
-			screenshot
+			screenshot,
+			device
 		})
 	
 		return res.status(201).json(feedback)

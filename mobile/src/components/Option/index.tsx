@@ -6,7 +6,7 @@ import { styles } from './styles'
 
 interface OptionProps extends TouchableOpacityProps {
 	title: string
-	image: ImageProps
+	image: ImageProps,
 }
 
 export function Option({ title, image, ...rest }: OptionProps){

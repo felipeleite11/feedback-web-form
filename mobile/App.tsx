@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler'
 
-import { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { StatusBar } from 'expo-status-bar'
 import { StyleSheet, View } from 'react-native'
 import * as SplashScreen from 'expo-splash-screen'
@@ -9,6 +9,8 @@ import { useFonts, Inter_400Regular, Inter_500Medium } from '@expo-google-fonts/
 import { theme } from './src/theme'
 
 import Widget from './src/components/Widget'
+
+// import { GlobalProvider } from './src/contexts/GlobalContext'
 
 export default function App() {
   const [appIsReady, setAppIsReady] = useState(false)
@@ -42,20 +44,22 @@ export default function App() {
     return null
   }
 
+  // <GlobalProvider>
   return (
-    <View 
-      style={styles.container}
-      onLayout={onLayoutRootView}
-    >
-      <StatusBar 
-        style="light" 
-        backgroundColor="transparent"
-        translucent
-      />
+      <View 
+        style={styles.container}
+        onLayout={onLayoutRootView}
+      >
+        <StatusBar 
+          style="light" 
+          backgroundColor="transparent"
+          translucent
+        />
 
-      <Widget />
-    </View>
+        <Widget />
+      </View>
   )
+  // </GlobalProvider>
 }
 
 const styles = StyleSheet.create({

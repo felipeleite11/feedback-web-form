@@ -6,8 +6,8 @@ const sendEmailSpy = jest.fn()
 
 const submitFeedack = new SubmitFeedbackUseCase(
 	{ 
-		create: createFeedbackSpy, // async () => { return {} as FeedbackReturnData },
-		list: listFeedbackSpy //async () => { return [] as FeedbackReturnData[] }
+		create: createFeedbackSpy,
+		list: listFeedbackSpy
 	},
 	{ sendMail: sendEmailSpy }
 )
@@ -17,7 +17,33 @@ describe('Submit feedback', () => {
 		const result = submitFeedack.execute({
 			type: 'BUG',
 			comment: 'Example comment...',
-			screenshot: 'data:image/png;base64print.jpg'
+			screenshot: 'data:image/png;base64_print.jpg'
+		})
+		
+		await expect(result).resolves.not.toThrow()
+
+		expect(createFeedbackSpy).toHaveBeenCalled()
+		expect(sendEmailSpy).toHaveBeenCalled()
+	})
+
+	it('should be able to submit a feedback from mobile device', async () => {
+		const result = submitFeedack.execute({
+			type: 'BUG',
+			comment: 'Example comment...',
+			screenshot: 'data:image/png;base64_print.jpg',
+			device: 'mobile'
+		})
+		
+		await expect(result).resolves.not.toThrow()
+
+		expect(createFeedbackSpy).toHaveBeenCalled()
+		expect(sendEmailSpy).toHaveBeenCalled()
+	})
+
+	it('should be able to submit a feedback without screenshot', async () => {
+		const result = submitFeedack.execute({
+			type: 'BUG',
+			comment: 'Example comment...'
 		})
 		
 		await expect(result).resolves.not.toThrow()

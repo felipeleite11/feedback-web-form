@@ -11,6 +11,7 @@ import { theme } from '../../theme'
 import { FeedbackType } from '../Widget'
 import { Screenshot } from '../Screenshot'
 import { Button } from '../Button'
+import { Copyright } from '../Copyright'
 
 import { feedbackTypes } from '../../utils/feedbackTypes'
 import { api } from '../../services/api'
@@ -123,6 +124,8 @@ export function Form({ feedbackType, onGoBack, onFeedbackSent }: FormProps) {
 					disabled={isSending}
 				/>
 			</View>
+
+			<Copyright />
 		</View>
 	)
 }

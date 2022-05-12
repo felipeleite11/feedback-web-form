@@ -5,7 +5,7 @@ interface SubmitFeedbackUseCaseRequest {
 	type: string
 	comment: string
 	screenshot?: string
-	device: string
+	device?: string
 }
 
 function validateScreenshotURI(uri: string) {

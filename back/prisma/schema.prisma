@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
@@ -11,7 +11,7 @@ model Feedback {
   id         String  @id @default(uuid())
   type       String
   comment    String
-  screenshot String? @db.LongText
+  screenshot String? // @db.LongText (for MySQL)
 
   @@map("feedbacks")
 }

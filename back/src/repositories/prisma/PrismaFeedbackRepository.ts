@@ -6,6 +6,10 @@ export class PrismaFeedbackRepository implements FeedbackRepository {
 	async create(data: FeedbackCreateData) {
 		const { type, comment, screenshot } = data
 
+		if(screenshot) {
+			console.log('screenshot length', screenshot.length)
+		}
+
 		const createdFeedback = await prisma.feedback.create({
 			data: {
 				type,

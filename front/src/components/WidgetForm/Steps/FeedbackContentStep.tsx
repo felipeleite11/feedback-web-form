@@ -5,18 +5,34 @@ import { feedbackTypes, GlobalContext, FeedbackType } from '../../../contexts/Gl
 
 import { CloseButon } from '../../CloseButton'
 import { ScreenshotButton } from '../ScreenshotButton'
+import { Loader } from '../Loader'
+
+import { api } from '../../../services/api'
 
 export function FeedbackContentStep() {
-	const { feedbackType, handleBackToTypeStep, setFeedbackSent } = useContext(GlobalContext)
+	const { feedbackType, handleBackToTypeStep, setFeedbackSent, screenshot } = useContext(GlobalContext)
 
-	const [ comment, setComment ] = useState('')
+	const [comment, setComment] = useState('')
+	const [isSendingFeedback, setIsSendingFeeedback] = useState(false)
 
 	const feedbackTypeInfo = feedbackTypes[feedbackType as FeedbackType]
 
 	async function handleSubmitFeedback(event: FormEvent) {
 		event.preventDefault()
 
-		// console.log((screenshot as string).length, comment)
+		setIsSendingFeeedback(true)
+
+		try {
+			await api.post('feedbacks', {
+				type: feedbackType,
+				comment,
+				screenshot
+			})
+		} catch(e) {
+			console.log('Ocorreu um erro ao enviar o feedback.')
+		}
+
+		setIsSendingFeeedback(false)
 
 		setFeedbackSent(true)
 	}
@@ -59,9 +75,9 @@ export function FeedbackContentStep() {
 					<button
 						type="submit"
 						className="p-2 bg-brand-500 rounded-md border-transparent flex-1 flex justify-center items-center text-sm hover:bg-brand-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-zinc-900 focus:ring-brand-500 transition-colors disabled:opacity-50 disabled:hover:bg-brand-500"
-						disabled={!comment}
+						disabled={!comment || isSendingFeedback}
 					>
-						Enviar feedback
+						{isSendingFeedback ? <Loader /> : 'Enviar feedback'}
 					</button>
 				</footer>
 			</form>

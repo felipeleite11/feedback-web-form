@@ -39,7 +39,7 @@ export class SubmitFeedbackUseCase {
 			screenshot 
 		})
 
-		const screenshotWidth = device === 'mobile' ? '400px' : 'unset'
+		const screenshotWidth = device === 'mobile' ? '400px' : '900px'
 		const screenshotHTML = screenshot ? `<p><img src="${screenshot}" style="width: ${screenshotWidth}" /></p>` : ''
 
 		await this.mailAdapter.sendMail({

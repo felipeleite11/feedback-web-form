@@ -21,4 +21,3 @@ Step 3 - The third step is a success message, allowing send one more feedback.
 ## How to use?
 
 Just do the integration with the API ("back" folder) and insert in your web or mobile app, as per sample projets ("front" and "mobile").
-
